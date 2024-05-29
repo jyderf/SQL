@@ -430,6 +430,29 @@ INSERT INTO `supermercado`.`empleado` (`idpersona`, `email_institucional`, `cont
 INSERT INTO `supermercado`.`empleado` (`idpersona`, `email_institucional`, `contrasena`, `fecha_registro`) VALUES ('1000000024', 'tabares@mercado.com', '345', '2020-07-03');
 
 
+use supermercado;
+DELIMITER //
+
+create trigger ingresa_pedido_producto after insert on pedido_producto
+for each row
+begin
+	update pedido set total = ( if(pedido.total is not null, pedido.total,0) + new.cantidad * (select p.costo from producto p where p.idproducto = new.idproducto)  )  where pedido.idpedido = new.idpedido ;
+   
+    
+    if (select st.idproducto from stock st where new.idproducto = st.idproducto)  is null 
+		then 
+       insert into stock (idproducto,cantidad) values(new.idproducto,0);        
+       end if;
+    
+    
+     if (select st.idproducto from stock st where new.idproducto = st.idproducto)  is not null 
+		then
+         update stock set idproducto = new.idproducto, cantidad = (if(stock.cantidad is not null or stock.cantidad != 0 , stock.cantidad, 0 ) + new.cantidad) where new.idproducto = stock.idproducto;
+	 end if;
+ 
+		
+end
+// DELIMITER ;
 
 
 
