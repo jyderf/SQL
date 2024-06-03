@@ -32,7 +32,7 @@ tipo_persona VARCHAR(10)
 );
 
 CREATE TABLE persona(
-idpersona VARCHAR(20) PRIMARY KEY UNIQUE,
+documento VARCHAR(20) primary key not null,
 idtipo_doc INT NOT NULL,
 idtipo_persona INT NOT NULL, #NATURAL O JURÍDICA
 nombre VARCHAR(50) NOT NULL,   
@@ -48,12 +48,11 @@ nombre VARCHAR(50) NOT NULL,
 );
 
 CREATE TABLE empleado (    
- idempleado INT PRIMARY KEY AUTO_INCREMENT,
- idpersona VARCHAR(20),
+ documento varchar(20) primary key not null,
  email_institucional VARCHAR(100) NOT NULL, 
  contrasena VARCHAR(100) NOT NULL,   
  fecha_registro DATE,
- FOREIGN KEY(idpersona) REFERENCES persona(idpersona)
+ FOREIGN KEY(documento) REFERENCES persona(documento)
  );
   
  ##########   INICIO PRODUCTO ###########
@@ -114,15 +113,15 @@ CREATE TABLE categoria (   #
 ###############  INICIO VENTA  ####################### 
   CREATE TABLE venta (   
 	idventa INT PRIMARY KEY AUTO_INCREMENT,  
-	idempleado INT ,
-    idcliente VARCHAR(20), 
+	documento_empleado varchar(20) ,
+    documento_cliente VARCHAR(20), 
 	fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
 	fecha_envio DATE,  
 	fecha_entrega DATE, 	
 	total DECIMAL(10,2) ,    
   
-	FOREIGN KEY (idempleado) REFERENCES empleado(idempleado),
-	FOREIGN KEY (idcliente) REFERENCES persona(idpersona)
+	FOREIGN KEY (documento_empleado) REFERENCES empleado(documento),
+	FOREIGN KEY (documento_cliente) REFERENCES persona(documento)
 );
  
  CREATE TABLE abono_venta(
@@ -163,14 +162,14 @@ CREATE TABLE categoria (   #
   ###    INICIO PEDIDOS   ##############################################  
   CREATE TABLE pedido (   
 	idpedido INT PRIMARY KEY AUTO_INCREMENT,  
-	idempleado INT,
-    idproveedor VARCHAR(20), 
+	documento_empleado varchar(20),
+    documento_proveedor VARCHAR(20), 
 	fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
 	fecha_envio DATE,  
 	fecha_entrega DATE, 	
 	total DECIMAL(10,2) ,  
-	FOREIGN KEY (idempleado) REFERENCES empleado(idempleado),
-	FOREIGN KEY (idproveedor) REFERENCES persona(idpersona)    
+	FOREIGN KEY (documento_empleado) REFERENCES empleado(documento),
+	FOREIGN KEY (documento_proveedor) REFERENCES persona(documento)    
     );
  
    CREATE TABLE saldo_pedido(
@@ -392,45 +391,44 @@ INSERT INTO `supermercado`.`tipo_doc` (`tipo_doc`) VALUES ('NIT');
 INSERT INTO `supermercado`.`tipo_persona` (`tipo_persona`) VALUES ('Natural');
 INSERT INTO `supermercado`.`tipo_persona` (`tipo_persona`) VALUES ('Jurídica');
 
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000001', '1', '1', 'BRIGITE', 'FUEL', '3204414571', 'brigite@gmail.com', '2008-12-01', 'B/Centro', '1');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000002', '1', '1', 'SANDRA', 'GUALGUAN', '3204414572', 'sandra@gmail.com', '2008-02-02', 'B/Carolina', '1');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000003', '2', '1', 'YEIMI', 'ARGOTI', '3204414573', 'yeimi@gmail.com', '1975-02-12', 'B/Pandiaco', '1');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000004', '2', '1', 'ANDRES', 'BARRERA', '3204414574', 'andres@gmail.com', '1980-12-12', 'B/Centro', '1');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000005', '2', '1', 'HECTOR', 'MADROÑERO', '3204414575', 'hector@gmail.com', '1976-11-10', 'V/ Via al puente', '2');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000006', '2', '1', 'RICHARD', 'BASTIDAS', '3204414576', 'richard@gmail.com', '1960-09-21', 'B/ Centro', '2');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000007', '2', '1', 'GINA', 'VEGA', '3204414577', 'gina@gmail.com', '1986-08-01', 'B/ JH', '2');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000008', '2', '1', 'GINELA', 'ORTIZ', '3204414578', 'ginela@gmail.com', '1987-05-01', 'B/Union', '2');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000009', '2', '1', 'JAIRO', 'LUNA', '3204414579', 'jairo@gmail.com', '1970-12-11', 'B/Villa Natalia', '3');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000010', '2', '1', 'WILSON', 'GOMEZ', '3204414510', 'wilson@gmail.com', '1987-11-11', 'B/ Independencia', '3');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000011', '2', '1', 'LUIS', 'AGUIRRE', '3204414511', 'luis1@gmail.com', '1976-01-01', 'B/ Modelo', '3');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000013', '2', '1', 'YENNI', 'CHAVES', '3204414513', 'yenni@gmail.com', '1999-04-13', 'V/ La Alemania', '4');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000014', '2', '1', 'JAVIER', 'HERNANDEZ', '3204414514', 'javier@gmail.com', '1976-03-11', 'B/ Los Diamantes', '4');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000015', '2', '1', 'MONICA', 'HERNANDEZ', '3204414515', 'monica@gmail.com', '1986-04-11', 'B/ Los diamantes', '4');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000016', '2', '1', 'ALEXANDRA', 'JURADO', '3204414516', 'alexandra@gmail.com', '1997-07-12', 'B/ Villacolombia', '4');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000017', '2', '1', 'LUBIER', 'VEGA', '3204414517', 'lubier@gmail.com', '1999-02-02', 'V/ El Nogal', '5');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000018', '2', '1', 'FABIO', 'DIAZ', '3204414518', 'fabio@gmail.com', '1990-03-04', 'B/ San Isidro', '5');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000019', '2', '1', 'ALBERTO', 'ANDAMIO', '3204414519', 'alberto@gmail.com', '1979-01-18', 'B/ Centro', '5');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000020', '2', '1', 'POLONIO', 'COLON', '3204414520', 'polonio@gmail.com', '1954-04-03', 'B/ Villasoñada', '5');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000021', '2', '1', 'ALICIA', 'TABARES', '3204414521', 'alicia@hotmail.com', '1990-09-07', 'B/ Normandía', '6');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000022', '2', '1', 'JUAN', 'ALARCON', '3204414522', 'juan@hotmail.com', '1967-05-09', 'B/ Villahermosa', '6');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000023', '2', '1', 'PATRICIA', 'CORONEL', '3204414523', 'patricia@hotmail.com', '1988-12-07', 'B/ Olímpica', '6');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000024', '2', '1', 'JUAN', 'TABARES', '3204414524', 'juan@hotmail.com', '2000-06-07', 'B/ La Pradera', '6');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000025', '3', '1', 'MARCELO', 'ZAPATA', '3204414525', 'marcelo@hotmail.com', '2002-03-12', 'Av/ La Española', '7');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000026', '4', '1', 'MICHAEL', 'SMITH', '3204414526', 'michael@hotmail.com', '1999-04-06', 'Wall Street', '8');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000027', '3', '1', 'RAMON', 'BENCENO', '3204414527', 'ramon@hotmail.com', '1998-06-01', 'Av/ Los Chavales', '7');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000028', '4', '1', 'JESICA', 'SIMPSON', '3204414528', 'jesica@hotmail.com', '2000-07-07', 'Beach', '8');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000029', '5', '2', 'GARCIA', 'HERMANOS', '3204444444', 'hermanosg@compa.com', '1977-12-12', 'B/centro', '5');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000030', '5', '2', 'GOMEZ', 'ASOCIADOS', '3162222222', 'gomezsa@mail.com', '1950-11-07', 'B/Centro', '5');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1777777731', '2', '1', 'ANGELA', 'ESPINOSA', '3157777771', 'angietabares@hotmail.com', '1987-11-13', 'B/Villahermosa', '9');
-INSERT INTO `supermercado`.`persona` (`idpersona`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1985555532', '2', '1', 'PATRICIA', 'PEDRAZA', '3189898782', 'pato@hotmail.com', '1999-12-12', 'B/Centro', '10');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000001', '1', '1', 'BRIGITE', 'FUEL', '3204414571', 'brigite@gmail.com', '2008-12-01', 'B/Centro', '1');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000002', '1', '1', 'SANDRA', 'GUALGUAN', '3204414572', 'sandra@gmail.com', '2008-02-02', 'B/Carolina', '1');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000003', '2', '1', 'YEIMI', 'ARGOTI', '3204414573', 'yeimi@gmail.com', '1975-02-12', 'B/Pandiaco', '1');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000004', '2', '1', 'ANDRES', 'BARRERA', '3204414574', 'andres@gmail.com', '1980-12-12', 'B/Centro', '1');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000005', '2', '1', 'HECTOR', 'MADROÑERO', '3204414575', 'hector@gmail.com', '1976-11-10', 'V/ Via al puente', '2');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000006', '2', '1', 'RICHARD', 'BASTIDAS', '3204414576', 'richard@gmail.com', '1960-09-21', 'B/ Centro', '2');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000007', '2', '1', 'GINA', 'VEGA', '3204414577', 'gina@gmail.com', '1986-08-01', 'B/ JH', '2');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000008', '2', '1', 'GINELA', 'ORTIZ', '3204414578', 'ginela@gmail.com', '1987-05-01', 'B/Union', '2');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('100000009', '2', '1', 'JAIRO', 'LUNA', '3204414579', 'jairo@gmail.com', '1970-12-11', 'B/Villa Natalia', '3');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000010', '2', '1', 'WILSON', 'GOMEZ', '3204414510', 'wilson@gmail.com', '1987-11-11', 'B/ Independencia', '3');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000011', '2', '1', 'LUIS', 'AGUIRRE', '3204414511', 'luis1@gmail.com', '1976-01-01', 'B/ Modelo', '3');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000013', '2', '1', 'YENNI', 'CHAVES', '3204414513', 'yenni@gmail.com', '1999-04-13', 'V/ La Alemania', '4');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000014', '2', '1', 'JAVIER', 'HERNANDEZ', '3204414514', 'javier@gmail.com', '1976-03-11', 'B/ Los Diamantes', '4');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000015', '2', '1', 'MONICA', 'HERNANDEZ', '3204414515', 'monica@gmail.com', '1986-04-11', 'B/ Los diamantes', '4');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000016', '2', '1', 'ALEXANDRA', 'JURADO', '3204414516', 'alexandra@gmail.com', '1997-07-12', 'B/ Villacolombia', '4');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000017', '2', '1', 'LUBIER', 'VEGA', '3204414517', 'lubier@gmail.com', '1999-02-02', 'V/ El Nogal', '5');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000018', '2', '1', 'FABIO', 'DIAZ', '3204414518', 'fabio@gmail.com', '1990-03-04', 'B/ San Isidro', '5');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000019', '2', '1', 'ALBERTO', 'ANDAMIO', '3204414519', 'alberto@gmail.com', '1979-01-18', 'B/ Centro', '5');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000020', '2', '1', 'POLONIO', 'COLON', '3204414520', 'polonio@gmail.com', '1954-04-03', 'B/ Villasoñada', '5');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000021', '2', '1', 'ALICIA', 'TABARES', '3204414521', 'alicia@hotmail.com', '1990-09-07', 'B/ Normandía', '6');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000022', '2', '1', 'JUAN', 'ALARCON', '3204414522', 'juan@hotmail.com', '1967-05-09', 'B/ Villahermosa', '6');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000023', '2', '1', 'PATRICIA', 'CORONEL', '3204414523', 'patricia@hotmail.com', '1988-12-07', 'B/ Olímpica', '6');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000024', '2', '1', 'JUAN', 'TABARES', '3204414524', 'juan@hotmail.com', '2000-06-07', 'B/ La Pradera', '6');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000025', '3', '1', 'MARCELO', 'ZAPATA', '3204414525', 'marcelo@hotmail.com', '2002-03-12', 'Av/ La Española', '7');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000026', '4', '1', 'MICHAEL', 'SMITH', '3204414526', 'michael@hotmail.com', '1999-04-06', 'Wall Street', '8');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000027', '3', '1', 'RAMON', 'BENCENO', '3204414527', 'ramon@hotmail.com', '1998-06-01', 'Av/ Los Chavales', '7');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000028', '4', '1', 'JESICA', 'SIMPSON', '3204414528', 'jesica@hotmail.com', '2000-07-07', 'Beach', '8');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000029', '5', '2', 'GARCIA', 'HERMANOS', '3204444444', 'hermanosg@compa.com', '1977-12-12', 'B/centro', '5');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1000000030', '5', '2', 'GOMEZ', 'ASOCIADOS', '3162222222', 'gomezsa@mail.com', '1950-11-07', 'B/Centro', '5');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1777777731', '2', '1', 'ANGELA', 'ESPINOSA', '3157777771', 'angietabares@hotmail.com', '1987-11-13', 'B/Villahermosa', '9');
+INSERT INTO `supermercado`.`persona` (`documento`, `idtipo_doc`, `idtipo_persona`, `nombre`, `apellido`, `telefono`, `email`, `fecha_nacimiento`, `direccion`, `idmunicipio`) VALUES ('1985555532', '2', '1', 'PATRICIA', 'PEDRAZA', '3189898782', 'pato@hotmail.com', '1999-12-12', 'B/Centro', '10');
 
 
-INSERT INTO `supermercado`.`empleado` (`idpersona`, `email_institucional`, `contrasena`, `fecha_registro`) VALUES ('1777777731', 'espinosa@mercado.com', '123', '2020-07-01');
-INSERT INTO `supermercado`.`empleado` (`idpersona`, `email_institucional`, `contrasena`, `fecha_registro`) VALUES ('1985555532', 'pedraza@mercado.com', '234', '2020-07-02');
-INSERT INTO `supermercado`.`empleado` (`idpersona`, `email_institucional`, `contrasena`, `fecha_registro`) VALUES ('1000000024', 'tabares@mercado.com', '345', '2020-07-03');
+INSERT INTO `supermercado`.`empleado` (`documento`, `email_institucional`, `contrasena`, `fecha_registro`) VALUES ('1777777731', 'espinosa@mercado.com', '123', '2020-07-01');
+INSERT INTO `supermercado`.`empleado` (`documento`, `email_institucional`, `contrasena`, `fecha_registro`) VALUES ('1985555532', 'pedraza@mercado.com', '234', '2020-07-02');
+INSERT INTO `supermercado`.`empleado` (`documento`, `email_institucional`, `contrasena`, `fecha_registro`) VALUES ('1000000024', 'tabares@mercado.com', '345', '2020-07-03');
 
-
-use supermercado;
+/*use supermercado;*/
 DELIMITER //
 
 create trigger ingresa_pedido_producto after insert on pedido_producto
@@ -439,13 +437,13 @@ begin
 	update pedido set total = ( if(pedido.total is not null, pedido.total,0) + new.cantidad * (select p.costo from producto p where p.idproducto = new.idproducto)  )  where pedido.idpedido = new.idpedido ;
    
     
-    if (select st.idproducto from stock st where new.idproducto = st.idproducto)  is null 
+    if (select st.idproducto from stock AS st where new.idproducto = st.idproducto)  is null 
 		then 
        insert into stock (idproducto,cantidad) values(new.idproducto,0);        
        end if;
     
     
-     if (select st.idproducto from stock st where new.idproducto = st.idproducto)  is not null 
+     if (select st.idproducto from stock AS st where new.idproducto = st.idproducto)  is not null 
 		then
          update stock set idproducto = new.idproducto, cantidad = (if(stock.cantidad is not null or stock.cantidad != 0 , stock.cantidad, 0 ) + new.cantidad) where new.idproducto = stock.idproducto;
 	 end if;
@@ -453,9 +451,3 @@ begin
 		
 end
 // DELIMITER ;
-
-
-
-
-
-
